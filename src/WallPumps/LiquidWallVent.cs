@@ -99,6 +99,7 @@ namespace WallPumps
         public override void DoPostConfigureComplete(GameObject go)
         {
             go.AddOrGetDef<VentController.Def>();
+            go.AddOrGet<LiquidWallVentTint>();
             AddVisualizer(go, false);
             GeneratedBuildings.RemoveLoopingSounds(go);
         }
