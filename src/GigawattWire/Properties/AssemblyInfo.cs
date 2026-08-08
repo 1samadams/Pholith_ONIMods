@@ -32,5 +32,8 @@ using System.Runtime.InteropServices;
 // You can specify all the values or you can default the Build and Revision Numbers
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
+// AssemblyVersion is deliberately left at 1.0.0.0: PLib is ILRepacked into this
+// assembly, so its identity is not purely ours to renumber. AssemblyFileVersion is
+// informational only, so it tracks the version in mod_info.yaml.
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("2.13.0.0")]

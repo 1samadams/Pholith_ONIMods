@@ -1,190 +1,85 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SDK-style port of the original non-SDK project. Builds with just the dotnet
+    SDK - no Visual Studio, no packages.config, no ilrepack on PATH.
+
+    Game DLLs resolve through $(GameLibsDir), set in GamePath.local.props at the
+    repo root (gitignored; see GamePath.local.props.example).
+  -->
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{CF5D36AE-7B3D-49F0-BB7E-734E55EECB23}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Egladil</RootNamespace>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyName>GigawattWire</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
+    <RootNamespace>Egladil</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <UsesGameLibs>true</UsesGameLibs>
+
+    <!-- Properties\AssemblyInfo.cs is checked in; don't generate a second set of attributes. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+    <!-- Output goes straight into the committed mod folder, with no net48\ subdirectory. -->
+    <OutputPath>..\..\Mods\GigawattWire\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
+    <DebugType>none</DebugType>
     <Deterministic>true</Deterministic>
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-    <TargetFrameworkProfile />
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
-    <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
-    <OutputPath>..\..\Mods\GigawattWire\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <DebugType>pdbonly</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\Mods\GigawattWire\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>prompt</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
   </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="..\Pholib\Utilities.cs">
-      <Link>Utilities.cs</Link>
-    </Compile>
-    <Compile Include="WireOptions.cs" />
-    <Compile Include="WIRE_STRINGS.cs" />
-    <Compile Include="WirePatchs.cs" />
-    <Compile Include="GigawattWireBridgeConfig.cs" />
-    <Compile Include="GigawattWireConfig.cs" />
-    <Compile Include="JacketedWireBridgeConfig.cs" />
-    <Compile Include="JacketedWireConfig.cs" />
-    <Compile Include="MegawattWireBridgeConfig.cs" />
-    <Compile Include="MegawattWireConfig.cs" />
-    <Compile Include="PowerTransformer2MWConfig.cs" />
-    <Compile Include="PowerTransformer100kWConfig.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="..\Pholib\Utilities.cs" Link="Utilities.cs" />
   </ItemGroup>
+
+  <!-- Files the packaged mod needs at runtime. Everything else in the project
+       directory (source art, spare previews) stays out of the output. -->
   <ItemGroup>
-    <None Include="anim\assets\gigawatt_wire\gigawatt_wire_anim.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\gigawatt_wire\gigawatt_wire_build.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\gigawatt_wire_bridge\gigawatt_wire_bridge_anim.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\gigawatt_wire_bridge\gigawatt_wire_bridge_build.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\jacketed_wire\jacketed_wire_anim.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\jacketed_wire\jacketed_wire_build.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\jacketed_wire_bridge\jacketed_wire_bridge_anim.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\jacketed_wire_bridge\jacketed_wire_bridge_build.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\megawatt_wire\megawatt_wire_anim.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\megawatt_wire\megawatt_wire_build.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\megawatt_wire_bridge\megawatt_wire_bridge_anim.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\megawatt_wire_bridge\megawatt_wire_bridge_build.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="app.config" />
-    <None Include="mod.yaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="mod_info.yaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-    <None Include="translations\fr.po">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="translations\zh.po">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Update="anim\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="translations\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="previews\preview.png" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="mod.yaml" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="mod_info.yaml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+
+  <!-- Game assemblies: referenced, never copied to the output. -->
   <ItemGroup>
-    <Content Include="anim\assets\gigawatt_wire\gigawatt_wire.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="anim\assets\gigawatt_wire_bridge\gigawatt_wire_bridge.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="anim\assets\jacketed_wire\jacketed_wire.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="anim\assets\jacketed_wire_bridge\jacketed_wire_bridge.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="anim\assets\megawatt_wire\megawatt_wire.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="anim\assets\megawatt_wire_bridge\megawatt_wire_bridge.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="elements\dummy.txt" />
-    <Content Include="previews\preview.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="previews\preview1.png" />
-    <Content Include="previews\preview2.png" />
-    <Content Include="previews\preview3.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\packages\GameLibs\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\packages\GameLibs\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>$(GameLibsDir)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\packages\GameLibs\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>$(GameLibsDir)\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>false</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.13.0.5-beta1\lib\net45\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="PLib, Version=4.25.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PLib.4.25.0\lib\net48\PLib.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Reflection.Emit.ILGeneration" />
     <Reference Include="UnityEngine">
-      <HintPath>..\packages\GameLibs\UnityEngine.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>$(GameLibsDir)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\packages\GameLibs\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>$(GameLibsDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(GameLibsDir)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- The game ships Newtonsoft.Json; use its copy rather than a NuGet build
+         that could drift from what the game loads at runtime. -->
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(GameLibsDir)\Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
     </Reference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>echo ======  Repacking PLib ...
-ilrepack /out:./$(TargetFileName) .\*.dll /wildcards /lib:"E:\SteamLibrary\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed"
-del /Q *PLib.*
 
-echo ====== Copy mods anim and files...
+  <ItemGroup>
+    <!-- ExcludeAssets=runtime keeps PLib off the output folder; ONIMod.targets
+         merges it into the mod assembly straight from the package. -->
+    <PackageReference Include="PLib" Version="4.25.0" GeneratePathProperty="true" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="ILRepack" Version="2.0.46" GeneratePathProperty="true" PrivateAssets="all" ExcludeAssets="all" />
+  </ItemGroup>
 
-xcopy /E /I /Q "$(ProjectDir)\anim" "$(OutDir)\anim" /y
-xcopy /E /I /Q "$(ProjectDir)\translations" "$(OutDir)\translations" /y
-copy "$(ProjectDir)\screen1.png" "$(OutDir)\screen1.png" /y &gt; nul
-copy "$(ProjectDir)\mod_info.yaml" "$(OutDir)\mod_info.yaml" /y &gt; nul
-copy "$(ProjectDir)\mod.yaml" "$(OutDir)\mod.yaml" /y &gt; nul
+  <Import Project="..\ONIMod.targets" />
 
-echo ======  Clean and Copy to /Dev ...
-rmdir /Q /S "$(SolutionDir)\..\..\..\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)"
-xcopy "$(TargetDir.TrimEnd('\'))" "$(SolutionDir)\..\..\..\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)" /E /I /Q
-</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>del /Q *</PreBuildEvent>
-  </PropertyGroup>
 </Project>
