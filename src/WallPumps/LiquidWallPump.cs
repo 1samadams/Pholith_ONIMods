@@ -90,6 +90,7 @@ namespace WallPumps
             GeneratedBuildings.RegisterSingleLogicInputPort(go);
             go.AddOrGet<LogicOperationalController>();
             go.AddOrGet<EnergyConsumer>();
+            go.AddOrGet<LiquidWallPumpTint>();
             go.AddOrGet<RotatablePump>();
             Storage storage = go.AddOrGet<Storage>();
             storage.capacityKg = GameOnLoadPatch.Settings.LiquidWallPumpRate * 2;

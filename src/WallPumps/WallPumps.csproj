@@ -1,259 +1,92 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    SDK-style port of the original non-SDK project. Builds with just the dotnet
+    SDK - no Visual Studio, no packages.config, no ILRepack.Lib.MSBuild.Task.
+
+    Game DLLs resolve through $(GameLibsDir), set in GamePath.local.props at the
+    repo root (gitignored; see GamePath.local.props.example).
+  -->
+
   <PropertyGroup>
-    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
-    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{40F24E73-E83E-4E8D-B919-63AAADE1BA09}</ProjectGuid>
-    <OutputType>Library</OutputType>
-    <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>WallPumps</RootNamespace>
+    <TargetFramework>net48</TargetFramework>
     <AssemblyName>WallPumps</AssemblyName>
-    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
-    <FileAlignment>512</FileAlignment>
-    <TargetFrameworkProfile />
-    <NuGetPackageImportStamp>
-    </NuGetPackageImportStamp>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>false</DebugSymbols>
-    <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <RootNamespace>WallPumps</RootNamespace>
+    <LangVersion>latest</LangVersion>
+    <UsesGameLibs>true</UsesGameLibs>
+
+    <!-- Properties\AssemblyInfo.cs is checked in; don't generate a second set of attributes. -->
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+
+    <!-- Output goes straight into the committed mod folder, with no net48\ subdirectory. -->
     <OutputPath>..\..\Mods\WallPumps\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <ErrorReport>none</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <Prefer32Bit>false</Prefer32Bit>
-  </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+
     <DebugType>none</DebugType>
-    <Optimize>true</Optimize>
-    <OutputPath>..\..\Mods\WallPumps\</OutputPath>
-    <DefineConstants>TRACE</DefineConstants>
-    <ErrorReport>none</ErrorReport>
-    <WarningLevel>4</WarningLevel>
-    <DebugSymbols>false</DebugSymbols>
-    <Prefer32Bit>false</Prefer32Bit>
+    <Deterministic>true</Deterministic>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateDependencyFile>false</GenerateDependencyFile>
   </PropertyGroup>
+
   <ItemGroup>
-    <Compile Include="..\Pholib\Utilities.cs">
-      <Link>Utilities.cs</Link>
-    </Compile>
-    <Compile Include="FairONI\AddBuilding.cs" />
-    <Compile Include="FairONI\AddTags.cs" />
-    <Compile Include="WallPumpOptions.cs" />
-    <Compile Include="LiquidWallVent.cs" />
-    <Compile Include="GasWallVentHighPressure.cs" />
-    <Compile Include="GasWallVent.cs" />
-    <Compile Include="LiquidWallPump.cs" />
-    <Compile Include="GasWallPump.cs" />
-    <Compile Include="RotatableElementConsumer.cs" />
-    <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="RotatableExhaust.cs" />
-    <Compile Include="RotateablePump.cs" />
-    <Compile Include="WallPumpsPatchs.cs" />
-    <Compile Include="WALLPUMP_STRINGS.cs" />
+    <Compile Include="..\Pholib\Utilities.cs" Link="Utilities.cs" />
   </ItemGroup>
+
+  <!-- Files the packaged mod needs at runtime. The texture\ folder holds the
+       Spriter sources the kanims were built from and stays out of the output. -->
   <ItemGroup>
-    <None Include="anim\assets\fairgaswallpump\fairgaswallpump_kanim_anim.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\fairgaswallpump\fairgaswallpump_kanim_build.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\fairgaswallventhighpressure\fairgaswallventhighpressure_kanim_anim.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\fairgaswallventhighpressure\fairgaswallventhighpressure_kanim_build.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\fairgaswallvent\fairgaswallvent_kanim_anim.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\fairgaswallvent\fairgaswallvent_kanim_build.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\fairliquidwallpump\fairliquidwallpump_kanim_anim.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\fairliquidwallpump\fairliquidwallpump_kanim_build.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\fairliquidwallvent\fairliquidwallvent_kanim_anim.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="anim\assets\fairliquidwallvent\fairliquidwallvent_kanim_build.bytes">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="app.config" />
-    <None Include="mod.yaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="mod_info.yaml">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="packages.config" />
-    <None Include="texture\gaswallpump\fairgaswallpump_kanim.atlas" />
-    <None Include="texture\gaswallpump\fairgaswallpump_kanim_anim.bytes" />
-    <None Include="texture\gaswallpump\fairgaswallpump_kanim_build.bytes" />
-    <None Include="texture\gaswallpump\gaswallpump_0.scml" />
-    <None Include="texture\gaswallventhighpressure\fairgaswallventhighpressure_kanim.atlas" />
-    <None Include="texture\gaswallventhighpressure\fairgaswallventhighpressure_kanim_anim.bytes" />
-    <None Include="texture\gaswallventhighpressure\fairgaswallventhighpressure_kanim_build.bytes" />
-    <None Include="texture\gaswallventhighpressure\gaswallventhighpressure_0.scml" />
-    <None Include="texture\gaswallvent\fairgaswallvent_kanim.atlas" />
-    <None Include="texture\gaswallvent\fairgaswallvent_kanim_anim.bytes" />
-    <None Include="texture\gaswallvent\fairgaswallvent_kanim_build.bytes" />
-    <None Include="texture\gaswallvent\gaswallvent_0.scml" />
-    <None Include="texture\Liquid to gas color range.axt" />
-    <None Include="texture\liquidwallpump\fairliquidwallpump_kanim.atlas" />
-    <None Include="texture\liquidwallpump\fairliquidwallpump_kanim_anim.bytes" />
-    <None Include="texture\liquidwallpump\fairliquidwallpump_kanim_build.bytes" />
-    <None Include="texture\liquidwallpump\liquidwallpump_0.scml" />
-    <None Include="texture\liquidwallvent\fairliquidwallvent_kanim.atlas" />
-    <None Include="texture\liquidwallvent\fairliquidwallvent_kanim_anim.bytes" />
-    <None Include="texture\liquidwallvent\fairliquidwallvent_kanim_build.bytes" />
-    <None Include="texture\liquidwallvent\liquidwallvent_0.scml" />
-    <None Include="texture\preview.psd" />
-    <None Include="texture\wallpumps.psd" />
-    <None Include="texture\wallvents.psd" />
-    <None Include="translations\es.po">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="translations\fr.po">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="translations\ru.po">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <None Update="anim\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="translations\**\*" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="preview.png" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="mod.yaml" CopyToOutputDirectory="PreserveNewest" />
+    <None Update="mod_info.yaml" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+
+  <!-- Game assemblies: referenced, never copied to the output. -->
   <ItemGroup>
-    <Content Include="anim\assets\fairgaswallpump\fairgaswallpump_kanim.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="anim\assets\fairgaswallventhighpressure\fairgaswallventhighpressure_kanim.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="anim\assets\fairgaswallvent\fairgaswallvent_kanim.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="anim\assets\fairliquidwallpump\fairliquidwallpump_kanim.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="anim\assets\fairliquidwallvent\fairliquidwallvent_kanim.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="preview.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-    <Content Include="texture\gaswallpump\background_0.png" />
-    <Content Include="texture\gaswallpump\base_0.png" />
-    <Content Include="texture\gaswallpump\fairgaswallpump_kanim.png" />
-    <Content Include="texture\gaswallpump\place_0.png" />
-    <Content Include="texture\gaswallpump\ui_0.png" />
-    <Content Include="texture\gaswallventhighpressure\background_0.png" />
-    <Content Include="texture\gaswallventhighpressure\base_0.png" />
-    <Content Include="texture\gaswallventhighpressure\fairgaswallventhighpressure_kanim.png" />
-    <Content Include="texture\gaswallventhighpressure\place_0.png" />
-    <Content Include="texture\gaswallventhighpressure\suck_fx_0.png" />
-    <Content Include="texture\gaswallventhighpressure\suck_fx_10.png" />
-    <Content Include="texture\gaswallventhighpressure\suck_fx_12.png" />
-    <Content Include="texture\gaswallventhighpressure\suck_fx_14.png" />
-    <Content Include="texture\gaswallventhighpressure\suck_fx_16.png" />
-    <Content Include="texture\gaswallventhighpressure\suck_fx_2.png" />
-    <Content Include="texture\gaswallventhighpressure\suck_fx_4.png" />
-    <Content Include="texture\gaswallventhighpressure\suck_fx_6.png" />
-    <Content Include="texture\gaswallventhighpressure\suck_fx_8.png" />
-    <Content Include="texture\gaswallventhighpressure\ui_0.png" />
-    <Content Include="texture\gaswallvent\background_0.png" />
-    <Content Include="texture\gaswallvent\base_0.png" />
-    <Content Include="texture\gaswallvent\fairgaswallvent_kanim.png" />
-    <Content Include="texture\gaswallvent\place_0.png" />
-    <Content Include="texture\gaswallvent\suck_fx_0.png" />
-    <Content Include="texture\gaswallvent\suck_fx_10.png" />
-    <Content Include="texture\gaswallvent\suck_fx_12.png" />
-    <Content Include="texture\gaswallvent\suck_fx_14.png" />
-    <Content Include="texture\gaswallvent\suck_fx_16.png" />
-    <Content Include="texture\gaswallvent\suck_fx_2.png" />
-    <Content Include="texture\gaswallvent\suck_fx_4.png" />
-    <Content Include="texture\gaswallvent\suck_fx_6.png" />
-    <Content Include="texture\gaswallvent\suck_fx_8.png" />
-    <Content Include="texture\gaswallvent\ui_0.png" />
-    <Content Include="texture\liquidwallpump\background_0.png" />
-    <Content Include="texture\liquidwallpump\base_0.png" />
-    <Content Include="texture\liquidwallpump\fairliquidwallpump_kanim.png" />
-    <Content Include="texture\liquidwallpump\place_0.png" />
-    <Content Include="texture\liquidwallpump\ui_0.png" />
-    <Content Include="texture\liquidwallvent\background_0.png" />
-    <Content Include="texture\liquidwallvent\base_0.png" />
-    <Content Include="texture\liquidwallvent\fairliquidwallvent_kanim.png" />
-    <Content Include="texture\liquidwallvent\place_0.png" />
-    <Content Include="texture\liquidwallvent\suck_fx_0.png" />
-    <Content Include="texture\liquidwallvent\suck_fx_10.png" />
-    <Content Include="texture\liquidwallvent\suck_fx_12.png" />
-    <Content Include="texture\liquidwallvent\suck_fx_14.png" />
-    <Content Include="texture\liquidwallvent\suck_fx_16.png" />
-    <Content Include="texture\liquidwallvent\suck_fx_2.png" />
-    <Content Include="texture\liquidwallvent\suck_fx_4.png" />
-    <Content Include="texture\liquidwallvent\suck_fx_6.png" />
-    <Content Include="texture\liquidwallvent\suck_fx_8.png" />
-    <Content Include="texture\liquidwallvent\ui_0.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="0Harmony">
-      <HintPath>..\packages\GameLibs\0Harmony.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
     <Reference Include="Assembly-CSharp">
-      <HintPath>..\packages\GameLibs\Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>$(GameLibsDir)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>..\packages\GameLibs\Assembly-CSharp-firstpass.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>$(GameLibsDir)\Assembly-CSharp-firstpass.dll</HintPath>
+      <Private>false</Private>
     </Reference>
-    <Reference Include="Newtonsoft.Json">
-      <HintPath>..\packages\GameLibs\Newtonsoft.Json.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="PLib, Version=4.24.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\PLib.4.24.0\lib\net48\PLib.dll</HintPath>
-    </Reference>
-    <Reference Include="System.IO.Compression" />
-    <Reference Include="System.Reflection.Emit.ILGeneration" />
     <Reference Include="UnityEngine">
-      <HintPath>..\packages\GameLibs\UnityEngine.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>$(GameLibsDir)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>..\packages\GameLibs\UnityEngine.CoreModule.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>$(GameLibsDir)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>..\packages\GameLibs\UnityEngine.UI.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>$(GameLibsDir)\UnityEngine.UI.dll</HintPath>
+      <Private>false</Private>
     </Reference>
     <Reference Include="UnityEngine.UIModule">
-      <HintPath>..\packages\GameLibs\UnityEngine.UIModule.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>$(GameLibsDir)\UnityEngine.UIModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(GameLibsDir)\0Harmony.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(GameLibsDir)\Newtonsoft.Json.dll</HintPath>
+      <Private>false</Private>
     </Reference>
   </ItemGroup>
-  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <PropertyGroup>
-    <PostBuildEvent>echo running script...
-rmdir /Q /S "$(SolutionDir)\..\..\..\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)"
-rm *.pdb
-xcopy "$(TargetDir.TrimEnd('\'))" "$(SolutionDir)\..\..\..\Klei\OxygenNotIncluded\mods\dev\$(ProjectName)" /E /I /Q
-</PostBuildEvent>
-  </PropertyGroup>
-  <PropertyGroup>
-    <PreBuildEvent>rmdir /Q/S $(TargetDir)</PreBuildEvent>
-  </PropertyGroup>
-  <Import Project="..\packages\ILRepack.Lib.MSBuild.Task.2.0.45\build\ILRepack.Lib.MSBuild.Task.targets" Condition="Exists('..\packages\ILRepack.Lib.MSBuild.Task.2.0.45\build\ILRepack.Lib.MSBuild.Task.targets')" />
-  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
-    <PropertyGroup>
-      <ErrorText>Ce projet fait référence à des packages NuGet qui sont manquants sur cet ordinateur. Utilisez l'option de restauration des packages NuGet pour les télécharger. Pour plus d'informations, consultez http://go.microsoft.com/fwlink/?LinkID=322105. Le fichier manquant est : {0}.</ErrorText>
-    </PropertyGroup>
-    <Error Condition="!Exists('..\packages\ILRepack.Lib.MSBuild.Task.2.0.45\build\ILRepack.Lib.MSBuild.Task.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\ILRepack.Lib.MSBuild.Task.2.0.45\build\ILRepack.Lib.MSBuild.Task.targets'))" />
-  </Target>
+
+  <ItemGroup>
+    <!-- ExcludeAssets=runtime keeps PLib off the output folder; ONIMod.targets
+         merges it into the mod assembly straight from the package. Bumped from
+         4.24.0 so both mods here build against one PLib. -->
+    <PackageReference Include="PLib" Version="4.25.0" GeneratePathProperty="true" ExcludeAssets="runtime" />
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+    <PackageReference Include="ILRepack" Version="2.0.46" GeneratePathProperty="true" PrivateAssets="all" ExcludeAssets="all" />
+  </ItemGroup>
+
+  <Import Project="..\ONIMod.targets" />
+
 </Project>

@@ -91,9 +91,11 @@ namespace WallPumps
     {
         public static void Postfix(BuildingComplete __instance)
         {
-            if (!__instance.gameObject.TryGetComponent(out KBatchedAnimController kAnim) || kAnim.name != "FairLiquidWallVentComplete") return;
+            GameObject go = __instance.gameObject;
+            if (!go.TryGetComponent(out LiquidWallVentTint _)) return;
+            if (!go.TryGetComponent(out KBatchedAnimController kAnim)) return;
+            if (!go.TryGetComponent(out Rotatable rotatable)) return;
 
-            Rotatable rotatable = __instance.gameObject.GetComponent<Rotatable>();
             if (rotatable.Orientation == Orientation.R180) // Bas
             {
                 kAnim.SetSymbolVisiblity("leak_side", false);
@@ -125,8 +127,10 @@ namespace WallPumps
     {
         public static void Postfix(ConduitConsumer __instance, ConduitFlow conduit_mgr)
         {
-            if (__instance.gameObject.name != "FairLiquidWallVentComplete") return;
-            if (!__instance.gameObject.TryGetComponent(out KBatchedAnimController kAnim) || kAnim.name != "FairLiquidWallVentComplete") return;
+            // Runs for every liquid/gas conduit consumer in the colony, so keep it
+            // allocation free - see LiquidWallVentTint.
+            if (!__instance.gameObject.TryGetComponent(out LiquidWallVentTint _)) return;
+            if (!__instance.gameObject.TryGetComponent(out KBatchedAnimController kAnim)) return;
 
             Color? substanceColor = Assets.instance.substanceTable.GetSubstance(__instance.lastConsumedElement)?.colour;
             Color finalSubstanceColor = substanceColor.HasValue ? substanceColor.Value : Color.white;
@@ -142,9 +146,10 @@ namespace WallPumps
     {
         public static void Postfix(ConduitDispenser __instance, PrimaryElement __result)
         {
-            if (__instance.gameObject.name != "FairLiquidWallPumpComplete") return;
             if (__result == null) return;
-            if (!__instance.gameObject.TryGetComponent(out KBatchedAnimController kAnim) || kAnim.name != "FairLiquidWallPumpComplete") return;
+            // Runs for every conduit dispenser in the colony - see LiquidWallPumpTint.
+            if (!__instance.gameObject.TryGetComponent(out LiquidWallPumpTint _)) return;
+            if (!__instance.gameObject.TryGetComponent(out KBatchedAnimController kAnim)) return;
 
             Color? substanceColor = Assets.instance.substanceTable.GetSubstance(__result.ElementID)?.colour;
             kAnim.SetSymbolTint("liquid", substanceColor.HasValue ? substanceColor.Value : Color.white);
