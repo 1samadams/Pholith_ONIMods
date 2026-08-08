@@ -237,12 +237,12 @@ namespace GigaWattWire
 
                 LocString key;
 
-                if (watts <= 1e9f)
+                if (watts < 1e9f)
                 {
                     key = WIRE_STRINGS.UI.UNITSUFFIXES.ELECTRICAL.MEGAWATT;
                     watts /= 1e6f;
                 }
-                else if (watts <= 1e12f)
+                else if (watts < 1e12f)
                 {
                     key = WIRE_STRINGS.UI.UNITSUFFIXES.ELECTRICAL.GIGAWATT;
                     watts /= 1e9f;
@@ -393,7 +393,9 @@ namespace GigaWattWire
                             statusItemID = Db.Get().BuildingStatusItems.Overloaded.Id
                         });
                     }
-                    if (___overloadedNotification == null)
+                    // targetOverloadedWire stays null when the RemoveAll calls above emptied
+                    // both lists, so guard the .transform dereference below.
+                    if (___overloadedNotification == null && ___targetOverloadedWire != null)
                     {
                         ___timeOverloadNotificationDisplayed = 0f;
                         ___overloadedNotification = new Notification(STRINGS.MISC.NOTIFICATIONS.CIRCUIT_OVERLOADED.NAME, NotificationType.BadMinor, null, click_focus: ___targetOverloadedWire.transform);
@@ -440,10 +442,6 @@ namespace GigaWattWire
         {
             public static void Postfix()
             {
-                for (int i = 0; i < Db.Get().Techs.Count; i++)
-                {
-                    //Logs.Log(Db.Get().Techs[i].Id);
-                }
                 if (GameOnLoadPatch.Settings.EnableJacketedWire)
                 {
                     Utilities.AddBuildingTech("RenewableEnergy", JacketedWireConfig.ID);
@@ -467,7 +465,7 @@ namespace GigaWattWire
                     Utilities.AddBuildingTech(techId, GigawattWireConfig.ID);
                     Utilities.AddBuildingTech(techId, GigawattWireBridgeConfig.ID);
                 }
-                if (GameOnLoadPatch.Settings.Enable100kWTransformer)
+                if (GameOnLoadPatch.Settings.Enable2MWTranformer)
                 {
                     Utilities.AddBuildingTech(techId, PowerTransformer2MWConfig.ID);
                 }
