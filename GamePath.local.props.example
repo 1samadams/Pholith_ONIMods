@@ -1,0 +1,17 @@
+<Project>
+
+  <!--
+    Copy this file to GamePath.local.props (gitignored) and point GameLibsDir at
+    your Oxygen Not Included install. Every SDK-style mod project resolves the
+    game DLLs (Assembly-CSharp, UnityEngine, 0Harmony, ...) through it.
+
+    ModsDevDir is where a successful build deploys the mod for testing. Note
+    that "Documents" is often redirected to OneDrive; use the real path.
+  -->
+
+  <PropertyGroup>
+    <GameLibsDir>C:\Program Files (x86)\Steam\steamapps\common\OxygenNotIncluded\OxygenNotIncluded_Data\Managed</GameLibsDir>
+    <ModsDevDir>$(USERPROFILE)\Documents\Klei\OxygenNotIncluded\mods\dev</ModsDevDir>
+  </PropertyGroup>
+
+</Project>

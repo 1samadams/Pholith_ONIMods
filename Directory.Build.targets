@@ -1,0 +1,24 @@
+<Project>
+
+  <!--
+    Fail with an actionable message instead of a wall of CS0246 "type or
+    namespace not found" errors when the game DLLs cannot be located.
+
+    Only projects that opt in by setting <UsesGameLibs>true</UsesGameLibs> are
+    checked, so the legacy non-SDK projects (which hardcode their own hint
+    paths) are unaffected.
+  -->
+
+  <Target Name="ValidateGameLibsDir"
+          BeforeTargets="ResolveAssemblyReferences"
+          Condition="'$(UsesGameLibs)' == 'true'">
+
+    <Error Condition="'$(GameLibsDir)' == ''"
+           Text="GameLibsDir is not set. Copy GamePath.local.props.example to GamePath.local.props at the repo root and point GameLibsDir at your Oxygen Not Included 'OxygenNotIncluded_Data\Managed' folder." />
+
+    <Error Condition="!Exists('$(GameLibsDir)\Assembly-CSharp.dll')"
+           Text="Assembly-CSharp.dll was not found under GameLibsDir ('$(GameLibsDir)'). Fix the path in GamePath.local.props at the repo root." />
+
+  </Target>
+
+</Project>

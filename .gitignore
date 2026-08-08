@@ -63,3 +63,6 @@ PholithModsGarbage
 package[s]
 *.psd
 GameLib
+
+# Machine-specific game/mod paths (see GamePath.local.props.example)
+GamePath.local.props

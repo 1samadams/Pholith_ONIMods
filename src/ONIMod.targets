@@ -1,0 +1,66 @@
+<Project>
+
+  <!--
+    Shared post-build steps for the SDK-style mod projects.
+
+    Replaces the original hand-written PostBuildEvent batch scripts, which
+    hardcoded one developer's Steam library path and a Klei mods directory that
+    only existed on their machine.
+  -->
+
+  <!--
+    Merge PLib into the mod assembly.
+
+    PLib is designed to be merged rather than shipped loose, so that a mod is
+    never at the mercy of whichever PLib version another mod happened to load
+    first. PLib's runtime assets are excluded from the output (ExcludeAssets)
+    and we repack straight from the package, so this stays correct on
+    incremental builds where nothing would be re-copied into $(OutDir).
+  -->
+  <Target Name="RepackPLib" AfterTargets="Build" Condition="'$(SkipPLibRepack)' != 'true'">
+
+    <PropertyGroup>
+      <_ILRepackExe>$(PkgILRepack)\tools\ILRepack.exe</_ILRepackExe>
+      <_PLibDll>$(PkgPLib)\lib\net48\PLib.dll</_PLibDll>
+      <_RepackDir>$(IntermediateOutputPath)repack\</_RepackDir>
+      <_RepackOut>$(_RepackDir)$(TargetFileName)</_RepackOut>
+    </PropertyGroup>
+
+    <Error Condition="!Exists('$(_ILRepackExe)')"
+           Text="ILRepack.exe not found at '$(_ILRepackExe)'. Restore packages first (dotnet restore)." />
+    <Error Condition="!Exists('$(_PLibDll)')"
+           Text="PLib.dll not found at '$(_PLibDll)'. Restore packages first (dotnet restore)." />
+
+    <MakeDir Directories="$(_RepackDir)" />
+
+    <!-- ILRepack cannot write over a file it is reading, so merge into obj\ and copy back. -->
+    <Exec Command="&quot;$(_ILRepackExe)&quot; /out:&quot;$(_RepackOut)&quot; /lib:&quot;$(GameLibsDir)&quot; &quot;$(OutDir)$(TargetFileName)&quot; &quot;$(_PLibDll)&quot;" />
+
+    <Copy SourceFiles="$(_RepackOut)" DestinationFolder="$(OutDir)" />
+
+    <!-- Clean up loose PLib files left behind by earlier, non-merging builds. -->
+    <Delete Files="$(OutDir)PLib.dll;$(OutDir)PLib.xml" />
+
+  </Target>
+
+  <!--
+    Opt-in deploy to the local game install: dotnet build -p:DeployToGame=true
+    Off by default so an ordinary build never writes outside the repo.
+  -->
+  <Target Name="DeployToGame" AfterTargets="RepackPLib" Condition="'$(DeployToGame)' == 'true'">
+
+    <Error Condition="'$(ModsDevDir)' == ''"
+           Text="ModsDevDir is not set. Add it to GamePath.local.props at the repo root (see GamePath.local.props.example)." />
+
+    <ItemGroup>
+      <_DeployFiles Include="$(OutDir)**\*" />
+    </ItemGroup>
+
+    <Copy SourceFiles="@(_DeployFiles)"
+          DestinationFiles="@(_DeployFiles->'$(ModsDevDir)\$(MSBuildProjectName)\%(RecursiveDir)%(Filename)%(Extension)')" />
+
+    <Message Importance="high" Text="Deployed $(MSBuildProjectName) to $(ModsDevDir)\$(MSBuildProjectName)" />
+
+  </Target>
+
+</Project>

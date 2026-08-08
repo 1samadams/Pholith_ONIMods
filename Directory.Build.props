@@ -1,0 +1,15 @@
+<Project>
+
+  <!--
+    Auto-imported by every project in this repo (MSBuild walks up from the
+    project directory). It only supplies machine-specific paths - it must stay
+    neutral, because the 24 mods that are still legacy non-SDK projects import
+    it too.
+
+    GamePath.local.props is gitignored; see GamePath.local.props.example.
+  -->
+
+  <Import Project="$(MSBuildThisFileDirectory)GamePath.local.props"
+          Condition="Exists('$(MSBuildThisFileDirectory)GamePath.local.props')" />
+
+</Project>
